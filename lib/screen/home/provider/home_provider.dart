@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:planets_app/utils/planets_json.dart';
 
+
+import '../../../utils/json_helper.dart';
 import '../model/home_model.dart';
 
 class HomeProvider with ChangeNotifier
