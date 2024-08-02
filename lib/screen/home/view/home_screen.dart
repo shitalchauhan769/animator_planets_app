@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -12,7 +14,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   HomeProvider? providerW;
   HomeProvider? providerR;
   AnimationController? animationController;
@@ -23,11 +25,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   void initState() {
     super.initState();
     context.read<HomeProvider>().getPlanets();
-    animationController=AnimationController(vsync:this ,duration: const Duration(seconds: 2));
-    sizeTween =Tween<double>(end: 0,begin: 5).animate(animationController!);
-    colorsTween=Tween<double>(begin:0 ,end:5 ).animate(animationController!);
-    animationController!.repeat(reverse: true);
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    );
 
+    animationController!.repeat(reverse: false);
+    animationController!.addListener(
+      () {
+        setState(() {});
+      },
+    );
   }
 
   @override
@@ -35,6 +43,22 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     providerR = context.read<HomeProvider>();
     providerW = context.watch<HomeProvider>();
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Galaxy Planets",
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, 'bookmark');
+            },
+            icon: const Icon(Icons.bookmark, color: Colors.white),
+          ),
+        ],
+        backgroundColor: const Color(0xff050214),
+      ),
       body: Stack(
         alignment: Alignment.center,
         children: [
@@ -46,11 +70,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ),
           GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisExtent: 250,
-              mainAxisSpacing: 5,
-              childAspectRatio: 5
-            ),
+                crossAxisCount: 2, mainAxisSpacing: 5, crossAxisSpacing: 5),
             itemCount: providerW!.planetsList.length,
             itemBuilder: (context, index) {
               return Column(
@@ -58,30 +78,40 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, "detail",arguments: index);
+                      Navigator.pushNamed(context, "detail", arguments: index);
                     },
-                    child: AnimatedBuilder(
-                      animation: animationController!,
-                      builder: (context, child) {
-                      return  Transform.translate(
-                          // angle: (pi*2) * animationController!.value,
-                          // scale:sizeTween!.value,
-                          offset:  Offset(0,100*animationController!.value),
-                          child: child,
-                        );
-                      },
-                      child: Container(
-                         height: 180,
-                        width: 180,
-                        child: Hero(
-                          tag: "$index",
-                          child: Image(
-                            image: NetworkImage(
-                                "${providerW!.planetsList[index].image}"),fit: BoxFit.cover,
-                            height: 120,
-                            width: 120,
-                          ),
-                        ),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          index != 8
+                              ? RotationTransition(
+                                  turns: animationController!,
+                                  child: SizedBox(
+                                    width: 150,
+                                    height: 150,
+                                    child: Hero(
+                                      tag: "$index",
+                                      child: Image(
+                                        image: NetworkImage(
+                                            "${providerW!.planetsList[index].image}"),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : SizedBox(
+                                  width: 150,
+                                  height: 150,
+                                  child: Hero(
+                                    tag: "$index",
+                                    child: Image(
+                                      image: NetworkImage(
+                                          "${providerW!.planetsList[index].image}"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                        ],
                       ),
                     ),
                   ),
@@ -99,5 +129,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    animationController!.dispose();
+    super.dispose();
   }
 }
