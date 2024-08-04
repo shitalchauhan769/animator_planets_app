@@ -29,7 +29,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       vsync: this,
       duration: const Duration(seconds: 3),
     );
-
     animationController!.repeat(reverse: false);
     animationController!.addListener(
       () {
@@ -55,6 +54,28 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               Navigator.pushNamed(context, 'bookmark');
             },
             icon: const Icon(Icons.bookmark, color: Colors.white),
+          ),
+          PopupMenuButton(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: const Text("Light"),
+                onTap: () {
+                  providerR!.setTheme("Light");
+                },
+              ),
+              PopupMenuItem(
+                child: const Text("Dark"),
+                onTap: () {
+                  providerR!.setTheme("Dark");
+                },
+              ),
+              PopupMenuItem(
+                child: const Text("System"),
+                onTap: () {
+                  providerR!.setTheme("System");
+                },
+              ),
+            ],
           ),
         ],
         backgroundColor: const Color(0xff050214),

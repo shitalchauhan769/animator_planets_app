@@ -22,4 +22,17 @@ class SharedHelper
     List<String> image=  shr.getStringList("image")??[];
     return image;
   }
+
+
+  Future<void> setTheme(String ThemeName) async {
+    SharedPreferences shr = await SharedPreferences.getInstance();
+    await shr.setString("theme", ThemeName);
+  }
+
+  Future<String?> getTheme() async {
+    SharedPreferences shr = await SharedPreferences.getInstance();
+    String? theme = shr.getString("theme");
+    return theme;
+  }
+
 }

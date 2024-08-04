@@ -9,6 +9,8 @@ class HomeProvider with ChangeNotifier {
   List<String> bookMarkNameList = [];
   List<String> bookMarkImageList = [];
   SharedHelper helper = SharedHelper();
+  String themeName = "system";
+  String? theme;
 
   Future<void> getPlanets() async {
     JsonAPIHelper helper = JsonAPIHelper();
@@ -36,5 +38,16 @@ class HomeProvider with ChangeNotifier {
 
     notifyListeners();
 
+  }
+
+  void setTheme(String theme) {
+    SharedHelper shr = SharedHelper();
+    shr.setTheme(theme );
+    getTheme();
+  }
+  Future<void> getTheme() async {
+    SharedHelper shr = SharedHelper();
+    theme=await shr.getTheme();
+    notifyListeners();
   }
 }

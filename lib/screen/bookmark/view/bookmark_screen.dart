@@ -9,15 +9,27 @@ class BookmarkScreen extends StatefulWidget {
   State<BookmarkScreen> createState() => _BookmarkScreenState();
 }
 
-class _BookmarkScreenState extends State<BookmarkScreen> {
+class _BookmarkScreenState extends State<BookmarkScreen>
+    with TickerProviderStateMixin {
   HomeProvider? providerW;
   HomeProvider? providerR;
+  AnimationController? animationController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     context.read<HomeProvider>().getData();
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    );
+    animationController!.repeat(reverse: false);
+    animationController!.addListener(
+      () {
+        setState(() {});
+      },
+    );
   }
 
   @override
@@ -26,8 +38,11 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
     providerW = context.watch<HomeProvider>();
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        title: const Text("Bookmark",style: TextStyle(color: Colors.white),),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text(
+          "Bookmark",
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: const Color(0xff050214),
       ),
       body: Stack(
@@ -63,12 +78,25 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold),
                             ),
-                            Spacer(),
-                            Image(
-                              image: NetworkImage(
-                                providerW!.bookMarkImageList[index],
-                              ),height:60,width: 60,
-                            ),
+                            const Spacer(),
+                            index != 8
+                                ? RotationTransition(
+                                    turns: animationController!,
+                                    child: Image(
+                                      image: NetworkImage(
+                                        providerW!.bookMarkImageList[index],
+                                      ),
+                                      height: 60,
+                                      width: 60,
+                                    ),
+                                  )
+                                : Image(
+                                    image: NetworkImage(
+                                      providerW!.bookMarkImageList[index],
+                                    ),
+                                    height: 60,
+                                    width: 60,
+                                  ),
                           ],
                         ),
                       ),
@@ -81,5 +109,11 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
         ],
       ),
     );
+  }
+
+  void dispose() {
+    // TODO: implement dispose
+    animationController!.dispose();
+    super.dispose();
   }
 }
