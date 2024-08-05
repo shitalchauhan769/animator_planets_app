@@ -50,4 +50,6 @@ class HomeProvider with ChangeNotifier {
     theme=await shr.getTheme();
     notifyListeners();
   }
+
+
 }

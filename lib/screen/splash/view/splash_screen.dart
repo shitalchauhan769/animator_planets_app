@@ -19,15 +19,16 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/video/solar01.gif"),
-            ),
+      body: Stack(
+        children: [
+          Image(
+            image: const NetworkImage(
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSk0Kdqf8qGZ4bXISzqjwKWKFAtgbuoRBO4rA&s"),
+            fit: BoxFit.cover,
+            width: MediaQuery.sizeOf(context).width,
+            height: MediaQuery.sizeOf(context).height,
           ),
-        ),
+        ],
       ),
     );
   }
