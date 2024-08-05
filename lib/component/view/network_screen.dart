@@ -1,22 +1,16 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+class Network_Widget extends StatelessWidget {
+  const Network_Widget({super.key});
 
-class NetworkProvider with ChangeNotifier
-{
-  Connectivity connectivity = Connectivity();
-  bool isInternet = true;
-  Future<void> checkConnectivity()
-  async{
-    Connectivity().onConnectivityChanged.listen((event) {
-      if(event.contains(ConnectivityResult.none))
-      {
-        isInternet =false;
-      }
-      else
-      {
-        isInternet=true;
-      }
-      notifyListeners();
-    });
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image(image: AssetImage("assets/image/img.png")),
+        ],
+      ),
+    );
   }
 }

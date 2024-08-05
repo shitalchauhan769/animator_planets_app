@@ -43,11 +43,20 @@ class _BookmarkScreenState extends State<BookmarkScreen>
           "Bookmark",
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: const Color(0xff050214),
+        backgroundColor: providerW!.themeName
+            ? const Color(0xff365b9a)
+            : const Color(0xff050214),
       ),
       body: Stack(
         children: [
-          Image(
+          providerW!.themeName
+              ? Image(
+            image: const AssetImage("assets/video/video3.gif"),
+            fit: BoxFit.cover,
+            width: MediaQuery.sizeOf(context).width,
+            height: MediaQuery.sizeOf(context).height,
+          )
+              : Image(
             image: const AssetImage("assets/video/video1.gif"),
             fit: BoxFit.cover,
             width: MediaQuery.sizeOf(context).width,
@@ -60,47 +69,51 @@ class _BookmarkScreenState extends State<BookmarkScreen>
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    Container(
-                      height: 100,
-                      width: MediaQuery.sizeOf(context).width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white.withOpacity(0.2),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              providerW!.bookMarkNameList[index],
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            const Spacer(),
-                            index != 8
-                                ? RotationTransition(
-                                    turns: animationController!,
-                                    child: Image(
-                                      image: NetworkImage(
-                                        providerW!.bookMarkImageList[index],
-                                      ),
-                                      height: 60,
-                                      width: 60,
-                                    ),
-                                  )
-                                : Image(
-                                    image: NetworkImage(
-                                      providerW!.bookMarkImageList[index],
-                                    ),
-                                    height: 60,
-                                    width: 60,
-                                  ),
-                          ],
-                        ),
-                      ),
-                    ),
+                   Container(
+                     height: 100,
+                     width: MediaQuery.sizeOf(context).width,
+                     decoration: BoxDecoration(
+                       borderRadius: BorderRadius.circular(20),
+                       color: Colors.white.withOpacity(0.2),
+                     ),
+                     child: Padding(
+                       padding: const EdgeInsets.all(8.0),
+                       child: Row(
+                         children: [
+                           Text(
+                             providerW!.bookMarkNameList[index],
+                             style: const TextStyle(
+                                 color: Colors.white,
+                                 fontSize: 20,
+                                 fontWeight: FontWeight.bold),
+                           ),
+                           const Spacer(),
+                           index != 8
+                               ? RotationTransition(
+                             turns: animationController!,
+                             child: Image(
+                               image: NetworkImage(
+                                 providerW!.bookMarkImageList[index],
+                               ),
+                               height: 60,
+                               width: 60,
+                             ),
+                           )
+                               : Image(
+                             image: NetworkImage(
+                               providerW!.bookMarkImageList[index],
+                             ),
+                             height: 60,
+                             width: 60,
+                           ),
+                           IconButton(onPressed: () {
+                             providerR!.removeBookMark(providerW!.bookMarkNameList[index],providerW!.bookMarkImageList[index]);
+                           }, icon: const Icon(Icons.delete),color: Colors.white,),
+                         ],
+                       ),
+                     ),
+                   ),
+
                   ],
                 ),
               );

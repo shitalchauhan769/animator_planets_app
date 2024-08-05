@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:planets_app/utils/shared_preferences.dart';
-
 import '../../../utils/json_helper.dart';
 import '../model/home_model.dart';
 
@@ -9,12 +9,20 @@ class HomeProvider with ChangeNotifier {
   List<String> bookMarkNameList = [];
   List<String> bookMarkImageList = [];
   SharedHelper helper = SharedHelper();
-  String themeName = "system";
-  String? theme;
+  bool? theme=false;
+  bool themeName=false;
 
   Future<void> getPlanets() async {
     JsonAPIHelper helper = JsonAPIHelper();
     planetsList = await helper.planetsAPI();
+    notifyListeners();
+  }
+
+  void removeBookMark(String? name, String? image)
+  {
+    helper.setBookMark(bookMarkNameList, bookMarkImageList);
+    bookMarkNameList.remove(name);
+    bookMarkImageList.remove(image);
     notifyListeners();
   }
 
@@ -37,17 +45,14 @@ class HomeProvider with ChangeNotifier {
       }
 
     notifyListeners();
-
   }
-
-  void setTheme(String theme) {
-    SharedHelper shr = SharedHelper();
-    shr.setTheme(theme );
-    getTheme();
+  void setTheme(bool value) {
+    helper.setThemeData(value);
+    theme=value;
+    notifyListeners();
   }
   Future<void> getTheme() async {
-    SharedHelper shr = SharedHelper();
-    theme=await shr.getTheme();
+    themeName = (await helper.getThemeData())!;
     notifyListeners();
   }
 

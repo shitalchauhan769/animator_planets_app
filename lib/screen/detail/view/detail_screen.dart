@@ -60,12 +60,21 @@ class _DetailScreenState extends State<DetailScreen>
             icon: const Icon(Icons.favorite,color: Colors.white),
           ),
         ],
-        backgroundColor: const Color(0xff050214),
+        backgroundColor:  providerW!.themeName
+            ? const Color(0xff365b9a)
+            : const Color(0xff050214),
       ),
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            Image(
+            providerW!.themeName
+                ? Image(
+              image: const AssetImage("assets/video/video3.gif"),
+              fit: BoxFit.cover,
+              width: MediaQuery.sizeOf(context).width,
+              height: MediaQuery.sizeOf(context).height,
+            )
+                : Image(
               image: const AssetImage("assets/video/video1.gif"),
               fit: BoxFit.cover,
               width: MediaQuery.sizeOf(context).width,

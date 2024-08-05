@@ -24,14 +24,14 @@ class SharedHelper
   }
 
 
-  Future<void> setTheme(String ThemeName) async {
+  Future<void> setThemeData(bool theme) async {
     SharedPreferences shr = await SharedPreferences.getInstance();
-    await shr.setString("theme", ThemeName);
+    await shr.setBool("theme", theme);
   }
 
-  Future<String?> getTheme() async {
+  Future<bool?> getThemeData() async {
     SharedPreferences shr = await SharedPreferences.getInstance();
-    String? theme = shr.getString("theme");
+  bool? theme = shr.getBool("theme");
     return theme;
   }
 
